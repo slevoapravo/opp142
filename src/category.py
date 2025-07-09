@@ -1,5 +1,4 @@
 from typing import Any
-
 from src.product import Product
 
 
@@ -22,14 +21,14 @@ class Category:
         print(Category.product_count)
 
     def __str__(self):
-        total_products = 0
-        for product in self.__products:
-            total_products += product.quantity
-        return f"{self.name}, количество продуктов: {total_products} шт."
+        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
 
     def add_product(self, product: Product) -> Any:
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def get_product_list(self) -> str:

@@ -1,38 +1,42 @@
-import unittest
-from src.category import Category
-from src.product import Product  # Убедитесь, что у вас есть класс Product
+import pytest
 
-class TestCategory(unittest.TestCase):
-    def setUp(self):
-        """Создаем объект категории для тестов"""
-        self.category_name = "Electronics"
-        self.category_description = "Electronic devices"
-        self.product1 = Product(name="Laptop", price=1000, quantity=5)
-        self.product2 = Product(name="Smartphone", price=500, quantity=10)
-        self.category = Category(self.category_name, self.category_description, [self.product1, self.product2])
 
-    def test_category_initialization(self):
-        """Тестируем инициализацию категории"""
-        self.assertEqual(self.category.name, self.category_name)
-        self.assertEqual(self.category.description, self.category_description)
-        self.assertEqual(len(self.category.get_product_list.splitlines()), 2)  # Проверяем количество продуктов
+def test_category(first_category, second_category):
+    assert first_category.name == "Category"
+    assert first_category.description == "Description of the category"
+    assert (
+        first_category.get_product_list
+        == "Product, 84.5 руб. Остаток: 10 шт.\nProduct number two, 155.87 руб. Остаток: 34 шт.\n"
+    )
 
-    def test_add_product(self):
-        """Тестируем добавление нового продукта в категорию"""
-        new_product = Product(name="Tablet", price=300, quantity=15)
-        self.category.add_product(new_product)
-        self.assertIn(new_product, self.category._Category__products)
-        self.assertEqual(len(self.category.get_product_list.splitlines()), 3)
+    assert first_category.category_count == 2
+    assert second_category.category_count == 2
 
-    def test_add_invalid_product(self):
-        """Тестируем добавление невалидного продукта и ожидаем ошибку"""
-        with self.assertRaises(TypeError):
-            self.category.add_product("Not a Product instance")
+    assert first_category.product_count == 5
+    assert second_category.product_count == 5
 
-    def test_get_product_list(self):
-        """Тестируем получение списка продуктов"""
-        expected_output = "Laptop, 1000 руб. Остаток: 5 шт.\nSmartphone, 500 руб. Остаток: 10 шт.\n"
-        self.assertEqual(self.category.get_product_list, expected_output)
 
-if __name__ == '__main__':
-    unittest.main()
+def test_cat_get_product_list_property(first_category, second_category):
+    with pytest.raises(AttributeError):
+        print(first_category.__products)
+    assert (
+        first_category.get_product_list
+        == "Product, 84.5 руб. Остаток: 10 шт.\nProduct number two, 155.87 руб. Остаток: 34 шт.\n"
+    )
+    assert (
+        second_category.get_product_list
+        == "Product, 84.5 руб. Остаток: 10 шт.\nProduct number two, 155.87 руб. Остаток: 34 шт."
+        "\nProduct three, 8467.56 руб. Остаток: 32 шт.\n"
+    )
+
+
+def test_category_str(first_category, second_category):
+    assert str(first_category) == "Category, количество продуктов: 2 шт."
+    assert str(second_category) == "Category number two, количество продуктов: 3 шт."
+
+
+def test_add_product(first_category, smartphone1, lawn_grass1):
+    first_category.add_product(smartphone1)
+    assert first_category.products[-1].name == "Samsung Galaxy S23 Ultra"
+    first_category.add_product(lawn_grass1)
+    assert first_category.products[-1].name == "Газонная трава"

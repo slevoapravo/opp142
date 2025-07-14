@@ -1,4 +1,3 @@
-
 import json
 import os
 from typing import Any
@@ -36,4 +35,3 @@ def create_object_from_json(data: dict) -> Any:
 
 result_2 = create_object_from_json(result)
 print(result_2)
-

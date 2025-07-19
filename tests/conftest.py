@@ -138,3 +138,12 @@ def lawn_grass2():
         "5 дней",
         "Темно-зеленый",
     )
+
+
+@pytest.fixture
+def category_without_products():
+    return Category(
+        name="Category without products",
+        description="Description of the category without products",
+        products=[],
+    )

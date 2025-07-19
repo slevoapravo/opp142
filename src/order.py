@@ -1,4 +1,3 @@
-
 from src.base import Base
 from src.product import Product
 
